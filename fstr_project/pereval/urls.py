@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import PerevalCreateViewset, UserViewset, CoordinateViewset, \
-    LevelViewset, ImageViewset
+    LevelViewset, ImageViewset, PerevalUpdateViewset
 
 router = DefaultRouter()
 router.register(r'create_pereval', PerevalCreateViewset, basename='create_pereval')
