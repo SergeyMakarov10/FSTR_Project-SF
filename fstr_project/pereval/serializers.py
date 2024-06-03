@@ -71,7 +71,7 @@ class PerevalSerializer(WritableNestedModelSerializer):
             if user_data:
                 user_fields = ['surname', 'name', 'otc', 'email', 'phone']
                 for field in user_fields:
-                    if field in user_data and gettattr(self.instance.user, field) != user_data[field]:
+                    if field in user_data and getattr(self.instance.user, field) != user_data[field]:
                         raise serializers.ValidationError("Данные о пользователе невозможно изменить")
 
         return data
