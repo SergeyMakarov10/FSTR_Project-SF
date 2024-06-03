@@ -1,6 +1,7 @@
 from .models import *
 from rest_framework import serializers
 from drf_writable_nested import WritableNestedModelSerializer
+from .resources import default_status
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -60,3 +61,17 @@ class PerevalSerializer(WritableNestedModelSerializer):
             Image.objects.create(pereval=pereval, **image_data)
 
         return pereval
+
+    def validate (self, data):
+        if self.instance:
+            if self.instance.status != default_status:
+                raise serializers.ValidationError("Можно редактировать только записи со статусом 'new'")
+
+            user_data = data.get('user', {})
+            if user_data:
+                user_fields = ['surname', 'name', 'otc', 'email', 'phone']
+                for field in user_fields:
+                    if field in user_data and gettattr(self.instance.user, field) != user_data[field]:
+                        raise serializers.ValidationError("Данные о пользователе невозможно изменить")
+
+        return data
