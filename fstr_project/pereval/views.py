@@ -6,6 +6,8 @@ from .models import *
 from .serializers import UserSerializer, CoordinateSerializer, LevelSerializer, \
     PerevalSerializer, ImageSerializer
 from .resources import default_status
+from django.shortcuts import get_object_or_404
+
 
 class UserViewset(viewsets.ModelViewSet):
     queryset = PerevalUser.objects.all()
@@ -50,6 +52,7 @@ class PerevalCreateViewset(viewsets.ModelViewSet):
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Обновление данных перевала
 class PerevalUpdateViewset(viewsets.ModelViewSet):
     queryset = PerevalAdded.objects.all().order_by('id')
     serializer_class = PerevalSerializer
@@ -89,3 +92,9 @@ class PerevalUpdateViewset(viewsets.ModelViewSet):
             print(f"Response data: {response_data}")  # Отладочное сообщение
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
+# Получение одной записи (перевала) по её id
+class PerevalDetailView(APIView):
+    def get(self, request, id):
+        pereval = get_object_or_404(PerevalAdded, id=id)
+        serializer = PerevalSerializer(pereval)
+        return Response(serializer.data, status=status.HTTP_200_OK)
