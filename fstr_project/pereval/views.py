@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from .models import *
 from .serializers import UserSerializer, CoordinateSerializer, LevelSerializer, \
     PerevalSerializer, ImageSerializer
+from .resources import default_status
 
 class UserViewset(viewsets.ModelViewSet):
     queryset = PerevalUser.objects.all()
@@ -23,6 +24,7 @@ class ImageViewset(viewsets.ModelViewSet):
     serializer_class = ImageSerializer
 
 
+# Создание перевала
 class PerevalCreateViewset(viewsets.ModelViewSet):
     queryset = PerevalAdded.objects.all()
     serializer_class = PerevalSerializer
@@ -46,3 +48,28 @@ class PerevalCreateViewset(viewsets.ModelViewSet):
             }
             print(f"Response data: {response_data}")  # Отладочное сообщение
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Создание перевала
+class PerevalUpdateViewset(viewsets.ModelViewSet):
+    queryset = PerevalAdded.objects.all().order_by('id')
+    serializer_class = PerevalSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        pereval = self.get_object()
+        serializer = PerevalSerializer(pereval, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            response_data = {
+                'status': 1,
+                'message': 'Данные успешно изменены',
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            response_data = {
+                'status': 0,
+                'message': 'Данные о пользователе невозможно изменить',
+                'errors': serializer.errors
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
