@@ -65,13 +65,13 @@ class PerevalSerializer(WritableNestedModelSerializer):
     def validate (self, data):
         if self.instance:
             if self.instance.status != default_status:
-                raise serializers.ValidationError("Можно редактировать только записи со статусом 'new'")
+                raise serializers.ValidationError({"status_error": "Можно редактировать только записи со статусом 'new'"})
 
             user_data = data.get('user', {})
             if user_data:
                 user_fields = ['surname', 'name', 'otc', 'email', 'phone']
                 for field in user_fields:
                     if field in user_data and getattr(self.instance.user, field) != user_data[field]:
-                        raise serializers.ValidationError("Данные о пользователе невозможно изменить")
+                        raise serializers.ValidationError({"user_error":"Данные о пользователе невозможно изменить"})
 
         return data
