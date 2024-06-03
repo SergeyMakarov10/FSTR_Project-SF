@@ -4,7 +4,7 @@ status_choices = [
         ('accepted', 'Accepted'),
         ('rejected', 'Rejected')
     ]
-default_status = 'New'
+default_status = 'new'
 level_list = [
         ('1a', '1A'),
         ('1b', '1Б'),
