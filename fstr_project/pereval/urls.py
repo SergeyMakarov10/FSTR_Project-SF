@@ -13,4 +13,5 @@ router.register(r'update_pereval', PerevalUpdateViewset, basename='update_pereva
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('perevals/<int:id>/', PerevalDetailView.as_view(), name='pereval-detail'),
 ]
