@@ -27,7 +27,7 @@ class ImageViewset(viewsets.ModelViewSet):
 
 
 # Создание перевала
-class PerevalCreateViewset(viewsets.ModelViewSet):
+class PerevalViewset(viewsets.ModelViewSet):
     queryset = PerevalAdded.objects.all()
     serializer_class = PerevalSerializer
 
