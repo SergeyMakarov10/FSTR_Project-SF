@@ -86,6 +86,7 @@ class PerevalSerializer(WritableNestedModelSerializer):
         instance.title = validated_data.get('title', instance.title)
         instance.other_title = validated_data.get('other_title', instance.other_title)
         instance.connect = validated_data.get('connect', instance.connect)
+        instance.status = validated_data.get('status', instance.status)
 
         if user_data:
             UserSerializer().update(instance.user, user_data)
