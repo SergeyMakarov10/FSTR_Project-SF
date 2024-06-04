@@ -37,7 +37,7 @@ class PerevalSerializer(WritableNestedModelSerializer):
     level = LevelSerializer()
     images = ImageSerializer(many=True)
     add_time = serializers.DateTimeField(format='%d-%m-%Y %H:%M:%S', read_only=True)
-    status = serializers.CharField(read_only=True)
+    status = serializers.CharField()
 
     class Meta:
         model = PerevalAdded
