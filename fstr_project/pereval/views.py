@@ -51,12 +51,6 @@ class PerevalCreateViewset(viewsets.ModelViewSet):
             print(f"Response data: {response_data}")  # Отладочное сообщение
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
-
-# Обновление данных перевала
-class PerevalUpdateViewset(viewsets.ModelViewSet):
-    queryset = PerevalAdded.objects.all().order_by('id')
-    serializer_class = PerevalSerializer
-
     def partial_update(self, request, *args, **kwargs):
         pereval = self.get_object()
         serializer = PerevalSerializer(pereval, data=request.data, partial=True)
@@ -91,6 +85,46 @@ class PerevalUpdateViewset(viewsets.ModelViewSet):
 
             print(f"Response data: {response_data}")  # Отладочное сообщение
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+# Обновление данных перевала
+# class PerevalUpdateViewset(viewsets.ModelViewSet):
+#     queryset = PerevalAdded.objects.all().order_by('id')
+#     serializer_class = PerevalSerializer
+#
+#     def partial_update(self, request, *args, **kwargs):
+#         pereval = self.get_object()
+#         serializer = PerevalSerializer(pereval, data=request.data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             response_data = {
+#                 'status': 1,
+#                 'message': 'Данные успешно изменены',
+#             }
+#             print(f"Response data: {response_data}")  # Отладочное сообщение
+#             return Response(response_data, status=status.HTTP_200_OK)
+#         else:
+#             # Проверяем ошибки и формируем корректное сообщение
+#             if 'status_error' in serializer.errors:
+#                 response_data = {
+#                     'status': 0,
+#                     'message': serializer.errors['status_error'][0],  # Извлекаем сообщение об ошибке статуса
+#                     'errors': serializer.errors
+#                 }
+#             elif 'user_error' in serializer.errors:
+#                 response_data = {
+#                     'status': 0,
+#                     'message': serializer.errors['user_error'][0],  # Извлекаем сообщение об ошибке пользователя
+#                     'errors': serializer.errors
+#                 }
+#             else:
+#                 response_data = {
+#                     'status': 0,
+#                     'message': 'Неверный запрос',
+#                     'errors': serializer.errors
+#                 }
+#
+#             print(f"Response data: {response_data}")  # Отладочное сообщение
+#             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 # Получение одной записи (перевала) по её id
 class PerevalDetailView(APIView):
