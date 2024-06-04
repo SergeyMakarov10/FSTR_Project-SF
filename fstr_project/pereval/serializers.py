@@ -75,3 +75,30 @@ class PerevalSerializer(WritableNestedModelSerializer):
                         raise serializers.ValidationError({"user_error":"Данные о пользователе невозможно изменить"})
 
         return data
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+        coord_data = validated_data.pop('coord')
+        level_data = validated_data.pop('level')
+        images_data = validated_data.pop('images')
+
+        instance.beauty_title = validated_data.get('beauty_title', instance.beauty_title)
+        instance.title = validated_data.get('title', instance.title)
+        instance.other_title = validated_data.get('other_title', instance.other_title)
+        instance.connect = validated_data.get('connect', instance.connect)
+
+        if user_data:
+            UserSerializer().update(instance.user, user_data)
+        if coord_data:
+            CoordinateSerializer().update(instance.coord, coord_data)
+        if level_data:
+            LevelSerializer().update(instance.level, level_data)
+
+        if images_data:
+            # Удаляем старые изображения и добавляем новые
+            instance.images.all().delete()
+            for image_data in images_data:
+                Image.objects.create(pereval=instance, **image_data)
+
+        instance.save()
+        return instance
