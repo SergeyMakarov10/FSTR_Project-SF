@@ -7,6 +7,7 @@ class PerevalUser(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя')
     otc = models.CharField(max_length=255, verbose_name='Отчество')
     email = models.EmailField(unique=True, verbose_name='Почта')
+    email = models.EmailField(max_length=255, verbose_name='Почта')
     phone = models.CharField(max_length=11, verbose_name='Телефон')
 
     def __str__(self):
@@ -15,9 +16,9 @@ class PerevalUser(models.Model):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
-        constraints = [
-            models.UniqueConstraint(fields=['email'], name='unique_email')
-        ]
+        # constraints = [
+        #     models.UniqueConstraint(fields=['email'], name='unique_email')
+        # ]
 
 class PerevalCoordinate(models.Model):
     latitude = models.FloatField(verbose_name='Широта')
