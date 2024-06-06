@@ -37,7 +37,9 @@ class PerevalSerializer(WritableNestedModelSerializer):
     level = LevelSerializer()
     images = ImageSerializer(many=True)
     add_time = serializers.DateTimeField(format='%d-%m-%Y %H:%M:%S', read_only=True)
+    # для метода patch не будет работать, нужно убрать read_only, но тогда PATCH не будет менять данные
     status = serializers.CharField()
+
 
     class Meta:
         model = PerevalAdded
@@ -77,10 +79,10 @@ class PerevalSerializer(WritableNestedModelSerializer):
         return data
 
     def update(self, instance, validated_data):
-        user_data = validated_data.pop('user')
-        coord_data = validated_data.pop('coord')
-        level_data = validated_data.pop('level')
-        images_data = validated_data.pop('images')
+        user_data = validated_data.pop('user', None)
+        coord_data = validated_data.pop('coord', None)
+        level_data = validated_data.pop('level', None)
+        images_data = validated_data.pop('images', None)
 
         instance.beauty_title = validated_data.get('beauty_title', instance.beauty_title)
         instance.title = validated_data.get('title', instance.title)

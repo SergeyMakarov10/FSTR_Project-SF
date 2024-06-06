@@ -33,23 +33,33 @@ class PerevalViewset(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = PerevalSerializer(data=request.data)
-        if serializer.is_valid():
-            pereval = serializer.save()
+        try:
+            if serializer.is_valid():
+                pereval = serializer.save()
+                response_data = {
+                    'status': 200,
+                    'message': '',
+                    'id': pereval.id
+                }
+                print(f"Response data: {response_data}")  # Отладочное сообщение
+                return Response(response_data, status=status.HTTP_201_CREATED)
+            else:
+                response_data = {
+                    'status': 400,
+                    'message': 'Неверный запрос',
+                    'errors': serializer.errors
+                }
+                print(f"Response data: {response_data}")  # Отладочное сообщение
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
             response_data = {
-                'status': 200,
-                'message': '',
-                'id': pereval.id
+                'status': 500,
+                'message': 'Ошибка при выполнении операции',
+                'errors': str(e)
             }
             print(f"Response data: {response_data}")  # Отладочное сообщение
-            return Response(response_data, status=status.HTTP_201_CREATED)
-        else:
-            response_data = {
-                'status': 400,
-                'message': 'Неверный запрос',
-                'errors': serializer.errors
-            }
-            print(f"Response data: {response_data}")  # Отладочное сообщение
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(response_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def partial_update(self, request, *args, **kwargs):
         pereval = self.get_object()

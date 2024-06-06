@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from pereval.yasg import urlpatterns as yasg_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pereval.urls'))
 ]
+
+urlpatterns += yasg_urlpatterns
