@@ -77,10 +77,10 @@ class PerevalSerializer(WritableNestedModelSerializer):
         return data
 
     def update(self, instance, validated_data):
-        user_data = validated_data.pop('user')
-        coord_data = validated_data.pop('coord')
-        level_data = validated_data.pop('level')
-        images_data = validated_data.pop('images')
+        user_data = validated_data.pop('user', None)
+        coord_data = validated_data.pop('coord', None)
+        level_data = validated_data.pop('level', None)
+        images_data = validated_data.pop('images', None)
 
         instance.beauty_title = validated_data.get('beauty_title', instance.beauty_title)
         instance.title = validated_data.get('title', instance.title)
