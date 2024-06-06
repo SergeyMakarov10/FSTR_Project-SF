@@ -165,7 +165,7 @@ class PerevalAPITests(APITestCase):
         response = self.client.get(url, {'user__email': 'test@example.com'})
         print(f"Get By User Response data: {response.data}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)  # Убедитесь, что возвращены обе записи
+        self.assertEqual(len(response.data), 2)
 
         for pereval in response.data:
             self.assertEqual(pereval['user']['email'], 'test@example.com')
