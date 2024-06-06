@@ -37,7 +37,9 @@ class PerevalSerializer(WritableNestedModelSerializer):
     level = LevelSerializer()
     images = ImageSerializer(many=True)
     add_time = serializers.DateTimeField(format='%d-%m-%Y %H:%M:%S', read_only=True)
+    # для метода patch не будет работать, нужно убрать read_only, но тогда PATCH не будет менять данные
     status = serializers.CharField()
+
 
     class Meta:
         model = PerevalAdded
